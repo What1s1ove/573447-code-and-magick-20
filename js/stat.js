@@ -25,6 +25,16 @@ var renderText = function (ctx, x, y, text) {
   ctx.fillText(text, x, y);
 };
 
+var printDiagram = function (ctx, player, idx, time, maxTime) {
+  ctx.fillStyle = '#000000';
+  ctx.fillText(Math.round(time), CLOUD_X + GAP + GIST_GAP + (BAR_GAP + BAR_WIDTH) * idx, barResultHeight - ((BAR_HEIGHT * time) / maxTime) + TEXT_GAP + GAP);
+  ctx.fillText(player, CLOUD_X + GAP + GIST_GAP + (BAR_GAP + BAR_WIDTH) * idx, CLOUD_HEIGHT - GAP);
+
+  ctx.fillStyle = (player === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgb(0, 0, 255,' + Math.random() + ')';
+
+  ctx.fillRect(CLOUD_X + GAP + GIST_GAP + (BAR_GAP + BAR_WIDTH) * idx, CLOUD_HEIGHT - GIST_GAP, BAR_WIDTH, (-BAR_HEIGHT * time) / maxTime);
+};
+
 var getMaxElement = function (arr) {
   var maxElement = arr[0];
 
@@ -47,12 +57,9 @@ window.renderStatistics = function (ctx, players, times) {
   var maxTime = getMaxElement(times);
 
   for (var i = 0; i < players.length; i++) {
-    ctx.fillStyle = '#000000';
-    ctx.fillText(Math.round(times[i]), CLOUD_X + GAP + GIST_GAP + (BAR_GAP + BAR_WIDTH) * i, barResultHeight - ((BAR_HEIGHT * times[i]) / maxTime) + TEXT_GAP + GAP);
-    ctx.fillText(players[i], CLOUD_X + GAP + GIST_GAP + (BAR_GAP + BAR_WIDTH) * i, CLOUD_HEIGHT - GAP);
+    var player = players[i];
+    var time = times[i];
 
-    ctx.fillStyle = (players[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgb(0, 0, 255,' + Math.random() + ')';
-
-    ctx.fillRect(CLOUD_X + GAP + GIST_GAP + (BAR_GAP + BAR_WIDTH) * i, CLOUD_HEIGHT - GIST_GAP, BAR_WIDTH, (-BAR_HEIGHT * times[i]) / maxTime);
+    printDiagram(ctx, player, i, time, maxTime);
   }
 };
