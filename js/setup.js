@@ -10,11 +10,17 @@ var userDialog = document.querySelector('.setup');
 var similarListElement = userDialog.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
+var getRandomNumber = function (min, max) {
+  var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  return randomNumber;
+};
+
 var getRandomItem = function (arr) {
   var min = 0;
   var max = arr.length - 1;
 
-  var randomIdx = Math.round(min - 0.5 + Math.random() * (max - min + 1));
+  var randomIdx = getRandomNumber(min, max);
 
   var randomItem = arr[randomIdx];
 
