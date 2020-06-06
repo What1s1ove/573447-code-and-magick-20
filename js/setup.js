@@ -46,20 +46,25 @@ var renderWizard = function (wizard) {
 
   wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
   wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-  wizardElement.querySelector('.wizard-eyes');
+  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
 
   return wizardElement;
 };
 
+var renderWizards = function (wizards) {
+  var fragment = document.createDocumentFragment();
+
+  wizards.forEach(function (wizard) {
+    fragment.appendChild(renderWizard(wizard));
+  });
+
+  similarListElement.appendChild(fragment);
+};
+
 var wizards = getWizards(WIZARDS_COUNT);
-var fragment = document.createDocumentFragment();
 
 userDialog.classList.remove('hidden');
 
-wizards.forEach(function (wizard) {
-  fragment.appendChild(renderWizard(wizard));
-});
-
-similarListElement.appendChild(fragment);
+renderWizards(wizards);
 
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
