@@ -16,6 +16,7 @@ var userDialog = document.querySelector('.setup');
 var userDialogOpen = document.querySelector('.setup-open');
 var userDialogClose = userDialog.querySelector('.setup-close');
 var userDialogSimilar = userDialog.querySelector('.setup-similar');
+var userDialogNameInput = userDialog.querySelector('.setup-user-name');
 var wizardCoat = userDialog.querySelector('.setup-wizard .wizard-coat');
 var wizardEyes = userDialog.querySelector('.setup-wizard .wizard-eyes');
 var wizardFireball = userDialog.querySelector('.setup-fireball-wrap');
@@ -111,7 +112,9 @@ var setColorListeners = function () {
 };
 
 var onPopupEscPress = function (evt) {
-  if (evt.key === 'Escape') {
+  var isUserNameFocus = document.activeElement === userDialogNameInput;
+
+  if (evt.key === 'Escape' && !isUserNameFocus) {
     evt.preventDefault();
 
     closePopup();
