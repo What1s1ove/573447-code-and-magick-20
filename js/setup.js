@@ -7,7 +7,7 @@ var WIZARD_COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 1
 var WIZARD_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var WIZARD_FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
-var WIZARD_COLOR_SETTINGS = {
+var WIZARD_COLOR_SETTING_TYPES = {
   FILL: 'fill',
   BACKGROUND_COLOR: 'backgroundColor'
 };
@@ -99,9 +99,9 @@ var setColorListener = function (wizardPart, input, styleProp, colors) {
 };
 
 var setColorListeners = function () {
-  var coatColorListener = setColorListener(wizardCoat, coatInput, WIZARD_COLOR_SETTINGS.FILL, WIZARD_COAT_COLORS);
-  var eyesColorListener = setColorListener(wizardEyes, eyesInput, WIZARD_COLOR_SETTINGS.FILL, WIZARD_EYES_COLORS);
-  var fireballListener = setColorListener(wizardFireball, fireballInput, WIZARD_COLOR_SETTINGS.BACKGROUND_COLOR, WIZARD_FIREBALL_COLORS);
+  var coatColorListener = setColorListener(wizardCoat, coatInput, WIZARD_COLOR_SETTING_TYPES.FILL, WIZARD_COAT_COLORS);
+  var eyesColorListener = setColorListener(wizardEyes, eyesInput, WIZARD_COLOR_SETTING_TYPES.FILL, WIZARD_EYES_COLORS);
+  var fireballListener = setColorListener(wizardFireball, fireballInput, WIZARD_COLOR_SETTING_TYPES.BACKGROUND_COLOR, WIZARD_FIREBALL_COLORS);
 
   return function () {
     wizardCoat.removeEventListener('click', coatColorListener);
