@@ -4,6 +4,7 @@
   var userDialog = document.querySelector('.setup');
   var userDialogOpen = document.querySelector('.setup-open');
   var userDialogClose = userDialog.querySelector('.setup-close');
+  var userDialogAvatar = userDialog.querySelector('.upload');
   var userDialogSimilar = userDialog.querySelector('.setup-similar');
   var wizardCoat = userDialog.querySelector('.setup-wizard .wizard-coat');
   var wizardEyes = userDialog.querySelector('.setup-wizard .wizard-eyes');
@@ -36,11 +37,13 @@
     var coatColorListener = setColorListener(wizardCoat, coatInput, WIZARD_COLOR_SETTING_TYPES.FILL, window.constants.WIZARD_COAT_COLORS);
     var eyesColorListener = setColorListener(wizardEyes, eyesInput, WIZARD_COLOR_SETTING_TYPES.FILL, window.constants.WIZARD_EYES_COLORS);
     var fireballListener = setColorListener(wizardFireball, fireballInput, WIZARD_COLOR_SETTING_TYPES.BACKGROUND_COLOR, window.constants.WIZARD_FIREBALL_COLORS);
+    var dragListener = window.addDragListener(userDialogAvatar, userDialog);
 
     return function () {
       wizardCoat.removeEventListener('click', coatColorListener);
       wizardEyes.removeEventListener('click', eyesColorListener);
       wizardFireball.removeEventListener('click', fireballListener);
+      userDialogAvatar.removeEventListener('mousedown', dragListener);
     };
   };
 
