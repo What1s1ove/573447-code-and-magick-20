@@ -4,35 +4,16 @@
   var WIZARDS_COUNT = 4;
 
   var userDialog = document.querySelector('.setup');
+  var userDialogSimilar = userDialog.querySelector('.setup-similar');
   var similarListElement = userDialog.querySelector('.setup-similar-list');
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
-  var getWizards = function (count) {
-    var wizards = [];
-
-    for (var i = 0; i < count; i++) {
-      var wizardName = window.helpers.getRandomItem(window.constants.WIZARD_NAMES) + ' ' + window.helpers.getRandomItem(window.constants.WIZARD_SURNAMES);
-      var wizardCoatColor = window.helpers.getRandomItem(window.constants.WIZARD_COAT_COLORS);
-      var wizardEyesColor = window.helpers.getRandomItem(window.constants.WIZARD_EYES_COLORS);
-
-      var wizard = {
-        name: wizardName,
-        coatColor: wizardCoatColor,
-        eyesColor: wizardEyesColor
-      };
-
-      wizards.push(wizard);
-    }
-
-    return wizards;
-  };
 
   var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
 
     return wizardElement;
   };
@@ -47,11 +28,29 @@
     similarListElement.appendChild(fragment);
   };
 
-  var initSetup = function (wizards) {
-    renderWizards(wizards);
+  var onLoadSuccess = function (wizards) {
+    var shuffledWizards = window.helpers.getShuffledArray(wizards);
+
+    renderWizards(shuffledWizards.slice(0, WIZARDS_COUNT));
+
+    userDialogSimilar.classList.remove('hidden');
   };
 
-  var wizards = getWizards(WIZARDS_COUNT);
+  var onLoadFailure = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
 
-  initSetup(wizards);
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  var initSetup = function () {
+    window.backend.load(onLoadSuccess, onLoadFailure);
+  };
+
+  initSetup();
 })();

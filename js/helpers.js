@@ -33,10 +33,22 @@ window.helpers = (function () {
     }
   };
 
+  var getShuffledArray = function (arr) {
+    var copiedArray = arr.slice();
+
+    var shuffledArray = copiedArray.sort(function () {
+
+      return 0.5 - Math.random();
+    });
+
+    return shuffledArray;
+  };
+
   return {
     getRandomNumber: getRandomNumber,
     getRandomItem: getRandomItem,
     checkIsEscEvent: checkIsEscEvent,
-    checkIsEnterEvent: checkIsEnterEvent
+    checkIsEnterEvent: checkIsEnterEvent,
+    getShuffledArray: getShuffledArray
   };
 })();
