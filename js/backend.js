@@ -33,7 +33,7 @@ window.backend = (function () {
 
     xhr.open(method, url);
 
-    xhr.send(data);
+    xhr.send(data || null);
   };
 
   return {

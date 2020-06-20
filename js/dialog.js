@@ -6,7 +6,6 @@
   var userDialogClose = userDialog.querySelector('.setup-close');
   var userDialogForm = userDialog.querySelector('.setup-wizard-form');
   var userDialogAvatar = userDialog.querySelector('.upload');
-  var userDialogSimilar = userDialog.querySelector('.setup-similar');
   var wizardCoat = userDialog.querySelector('.setup-wizard .wizard-coat');
   var wizardEyes = userDialog.querySelector('.setup-wizard .wizard-eyes');
   var wizardFireball = userDialog.querySelector('.setup-fireball-wrap');
@@ -76,7 +75,6 @@
 
   var openPopup = function () {
     userDialog.classList.remove('hidden');
-    userDialogSimilar.classList.remove('hidden');
 
     wizardFormCleanUp = setFormListeners();
 
@@ -85,7 +83,6 @@
 
   var closePopup = function () {
     userDialog.classList.add('hidden');
-    userDialogSimilar.classList.add('hidden');
 
     wizardFormCleanUp();
 
