@@ -4,6 +4,7 @@
   var userDialog = document.querySelector('.setup');
   var userDialogOpen = document.querySelector('.setup-open');
   var userDialogClose = userDialog.querySelector('.setup-close');
+  var userDialogForm = userDialog.querySelector('.setup-wizard-form');
   var userDialogAvatar = userDialog.querySelector('.upload');
   var userDialogSimilar = userDialog.querySelector('.setup-similar');
   var wizardCoat = userDialog.querySelector('.setup-wizard .wizard-coat');
@@ -12,7 +13,7 @@
   var coatInput = userDialog.querySelector('input[name="coat-color"]');
   var eyesInput = userDialog.querySelector('input[name="eyes-color"]');
   var fireballInput = userDialog.querySelector('input[name="fireball-color"]');
-  var wizardSettingsCleanUp;
+  var wizardFormCleanUp;
 
   var WIZARD_COLOR_SETTING_TYPES = {
     FILL: 'fill',
@@ -33,10 +34,11 @@
     return listener;
   };
 
-  var setColorListeners = function () {
+  var setFormListeners = function () {
     var coatColorListener = setColorListener(wizardCoat, coatInput, WIZARD_COLOR_SETTING_TYPES.FILL, window.constants.WIZARD_COAT_COLORS);
     var eyesColorListener = setColorListener(wizardEyes, eyesInput, WIZARD_COLOR_SETTING_TYPES.FILL, window.constants.WIZARD_EYES_COLORS);
     var fireballListener = setColorListener(wizardFireball, fireballInput, WIZARD_COLOR_SETTING_TYPES.BACKGROUND_COLOR, window.constants.WIZARD_FIREBALL_COLORS);
+    var submitListener = setSubmitListener(userDialogForm);
     var dragListener = window.addDragListener(userDialogAvatar, userDialog);
 
     return function () {
@@ -44,7 +46,24 @@
       wizardEyes.removeEventListener('click', eyesColorListener);
       wizardFireball.removeEventListener('click', fireballListener);
       userDialogAvatar.removeEventListener('mousedown', dragListener);
+      userDialogForm.removeEventListener('submit', submitListener);
     };
+  };
+
+  var setSubmitListener = function (form) {
+    var submitListener = function (evt) {
+      var formData = new FormData(form);
+
+      window.backend.save(formData, function (_response) {
+        userDialog.classList.add('hidden');
+      });
+
+      evt.preventDefault();
+    };
+
+    form.addEventListener('submit', submitListener);
+
+    return submitListener;
   };
 
   var onPopupEscPress = function (evt) {
@@ -55,7 +74,7 @@
     userDialog.classList.remove('hidden');
     userDialogSimilar.classList.remove('hidden');
 
-    wizardSettingsCleanUp = setColorListeners();
+    wizardFormCleanUp = setFormListeners();
 
     document.addEventListener('keydown', onPopupEscPress);
   };
@@ -64,12 +83,12 @@
     userDialog.classList.add('hidden');
     userDialogSimilar.classList.add('hidden');
 
-    wizardSettingsCleanUp();
+    wizardFormCleanUp();
 
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
-  var initAppListeners = function () {
+  var initListeners = function () {
     userDialogOpen.addEventListener('click', function () {
       openPopup();
     });
@@ -87,9 +106,9 @@
     });
   };
 
-  var initDialog = function () {
-    initAppListeners();
+  var init = function () {
+    initListeners();
   };
 
-  initDialog();
+  init();
 })();
