@@ -54,9 +54,13 @@
     var submitListener = function (evt) {
       var formData = new FormData(form);
 
-      window.backend.save(formData, function (_response) {
-        userDialog.classList.add('hidden');
-      });
+      window.backend.save(
+          function (_response) {
+            userDialog.classList.add('hidden');
+          },
+          function () {},
+          formData
+      );
 
       evt.preventDefault();
     };
