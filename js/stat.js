@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.stat = (function () {
   var CLOUD_WIDTH = 420;
   var CLOUD_HEIGHT = 270;
   var CLOUD_X = 100;

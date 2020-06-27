@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.dialog = (function () {
   var userDialog = document.querySelector('.setup');
   var userDialogOpen = document.querySelector('.setup-open');
   var userDialogClose = userDialog.querySelector('.setup-close');
@@ -14,18 +14,30 @@
   var fireballInput = userDialog.querySelector('input[name="fireball-color"]');
   var wizardFormCleanUp;
 
-  var WIZARD_COLOR_SETTING_TYPES = {
+  var WizardColorSettingsType = {
     FILL: 'fill',
     BACKGROUND_COLOR: 'backgroundColor'
   };
 
-  var setColorListener = function (wizardPart, input, styleProp, colors) {
+  var changeSimilarList = function () {
+    window.similarList.changeListSettings({
+      colorCoat: coatInput.value,
+      colorEyes: eyesInput.value,
+      colorFireball: fireballInput.value
+    });
+  };
+
+  var setColorListener = function (wizardPart, input, styleProp, colors, cb) {
     var listener = function () {
       var color = window.helpers.getRandomItem(colors);
 
       wizardPart.style[styleProp] = color;
 
       input.value = color;
+
+      if (cb) {
+        cb();
+      }
     };
 
     wizardPart.addEventListener('click', listener);
@@ -34,9 +46,27 @@
   };
 
   var setFormListeners = function () {
-    var coatColorListener = setColorListener(wizardCoat, coatInput, WIZARD_COLOR_SETTING_TYPES.FILL, window.constants.WIZARD_COAT_COLORS);
-    var eyesColorListener = setColorListener(wizardEyes, eyesInput, WIZARD_COLOR_SETTING_TYPES.FILL, window.constants.WIZARD_EYES_COLORS);
-    var fireballListener = setColorListener(wizardFireball, fireballInput, WIZARD_COLOR_SETTING_TYPES.BACKGROUND_COLOR, window.constants.WIZARD_FIREBALL_COLORS);
+    var coatColorListener = setColorListener(
+        wizardCoat,
+        coatInput,
+        WizardColorSettingsType.FILL,
+        window.constants.WIZARD_COAT_COLORS,
+        changeSimilarList
+    );
+    var eyesColorListener = setColorListener(
+        wizardEyes,
+        eyesInput,
+        WizardColorSettingsType.FILL,
+        window.constants.WIZARD_EYES_COLORS,
+        changeSimilarList
+    );
+    var fireballListener = setColorListener(
+        wizardFireball,
+        fireballInput,
+        WizardColorSettingsType.BACKGROUND_COLOR,
+        window.constants.WIZARD_FIREBALL_COLORS,
+        changeSimilarList
+    );
     var submitListener = setSubmitListener(userDialogForm);
     var dragListener = window.addDragListener(userDialogAvatar, userDialog);
 
@@ -109,6 +139,8 @@
 
   var init = function () {
     initListeners();
+
+    changeSimilarList();
   };
 
   init();
