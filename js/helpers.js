@@ -3,6 +3,7 @@
 window.helpers = (function () {
   var ESC_KEY = 'Escape';
   var ENTER_KEY = 'Enter';
+  var DEBOUNCE_INTERVAL = 500;
 
   var getRandomNumber = function (min, max) {
     var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -33,10 +34,25 @@ window.helpers = (function () {
     }
   };
 
+  var debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, arguments);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   return {
     getRandomNumber: getRandomNumber,
     getRandomItem: getRandomItem,
     checkIsEscEvent: checkIsEscEvent,
-    checkIsEnterEvent: checkIsEnterEvent
+    checkIsEnterEvent: checkIsEnterEvent,
+    debounce: debounce
   };
 })();

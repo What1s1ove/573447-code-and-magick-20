@@ -1,6 +1,8 @@
 'use strict';
 
 window.dialog = (function () {
+  var helpers = window.helpers;
+  var constants = window.constants;
   var userDialog = document.querySelector('.setup');
   var userDialogOpen = document.querySelector('.setup-open');
   var userDialogClose = userDialog.querySelector('.setup-close');
@@ -23,13 +25,13 @@ window.dialog = (function () {
     window.similarList.changeListSettings({
       colorCoat: coatInput.value,
       colorEyes: eyesInput.value,
-      colorFireball: fireballInput.value
+      colorFireball: fireballInput.value,
     });
   };
 
   var setColorListener = function (wizardPart, input, styleProp, colors, cb) {
     var listener = function () {
-      var color = window.helpers.getRandomItem(colors);
+      var color = helpers.getRandomItem(colors);
 
       wizardPart.style[styleProp] = color;
 
@@ -50,22 +52,28 @@ window.dialog = (function () {
         wizardCoat,
         coatInput,
         WizardColorSettingsType.FILL,
-        window.constants.WIZARD_COAT_COLORS,
-        changeSimilarList
+        constants.WIZARD_COAT_COLORS,
+        helpers.debounce(function () {
+          changeSimilarList();
+        })
     );
     var eyesColorListener = setColorListener(
         wizardEyes,
         eyesInput,
         WizardColorSettingsType.FILL,
-        window.constants.WIZARD_EYES_COLORS,
-        changeSimilarList
+        constants.WIZARD_EYES_COLORS,
+        helpers.debounce(function () {
+          changeSimilarList();
+        })
     );
     var fireballListener = setColorListener(
         wizardFireball,
         fireballInput,
         WizardColorSettingsType.BACKGROUND_COLOR,
-        window.constants.WIZARD_FIREBALL_COLORS,
-        changeSimilarList
+        constants.WIZARD_FIREBALL_COLORS,
+        helpers.debounce(function () {
+          changeSimilarList();
+        })
     );
     var submitListener = setSubmitListener(userDialogForm);
     var dragListener = window.addDragListener(userDialogAvatar, userDialog);
@@ -100,7 +108,7 @@ window.dialog = (function () {
   };
 
   var onPopupEscPress = function (evt) {
-    window.helpers.checkIsEscEvent(evt, closePopup);
+    helpers.checkIsEscEvent(evt, closePopup);
   };
 
   var openPopup = function () {
@@ -125,7 +133,7 @@ window.dialog = (function () {
     });
 
     userDialogOpen.addEventListener('keydown', function (evt) {
-      window.helpers.checkIsEnterEvent(evt, openPopup);
+      helpers.checkIsEnterEvent(evt, openPopup);
     });
 
     userDialogClose.addEventListener('click', function () {
@@ -133,7 +141,7 @@ window.dialog = (function () {
     });
 
     userDialogClose.addEventListener('keydown', function (evt) {
-      window.helpers.checkIsEnterEvent(evt, closePopup);
+      helpers.checkIsEnterEvent(evt, closePopup);
     });
   };
 
