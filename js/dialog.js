@@ -16,7 +16,8 @@ window.dialog = (function () {
   var fireballInput = userDialog.querySelector('input[name="fireball-color"]');
   var avatarInput = userDialog.querySelector('.upload input[name="avatar"]');
   var avatarPreviewNode = userDialog.querySelector('.setup-user-pic');
-  var wizardFormCleanUp;
+  var wizardFormCleanUp = null;
+  var backupCleanUp = null;
 
   var WizardColorSettingsType = {
     FILL: 'fill',
@@ -122,6 +123,8 @@ window.dialog = (function () {
   var openPopup = function () {
     userDialog.classList.remove('hidden');
 
+    backupCleanUp = window.backpack.subscribeDrag();
+
     wizardFormCleanUp = setFormListeners();
 
     document.addEventListener('keydown', onPopupEscPress);
@@ -131,6 +134,8 @@ window.dialog = (function () {
     userDialog.classList.add('hidden');
 
     wizardFormCleanUp();
+
+    backupCleanUp();
 
     document.removeEventListener('keydown', onPopupEscPress);
   };
