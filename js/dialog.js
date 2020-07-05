@@ -14,6 +14,8 @@ window.dialog = (function () {
   var coatInput = userDialog.querySelector('input[name="coat-color"]');
   var eyesInput = userDialog.querySelector('input[name="eyes-color"]');
   var fireballInput = userDialog.querySelector('input[name="fireball-color"]');
+  var avatarInput = userDialog.querySelector('.upload input[name="avatar"]');
+  var avatarPreviewNode = userDialog.querySelector('.setup-user-pic');
   var wizardFormCleanUp;
 
   var WizardColorSettingsType = {
@@ -47,7 +49,12 @@ window.dialog = (function () {
     return listener;
   };
 
+  var onLoadAvatar = function () {
+    helpers.setImagePreview(avatarInput, avatarPreviewNode);
+  };
+
   var setFormListeners = function () {
+    avatarInput.addEventListener('change', onLoadAvatar);
     var coatColorListener = setColorListener(
         wizardCoat,
         coatInput,
@@ -79,6 +86,7 @@ window.dialog = (function () {
     var dragListener = window.addDragListener(userDialogAvatar, userDialog);
 
     return function () {
+      avatarInput.removeEventListener('change', onLoadAvatar);
       wizardCoat.removeEventListener('click', coatColorListener);
       wizardEyes.removeEventListener('click', eyesColorListener);
       wizardFireball.removeEventListener('click', fireballListener);

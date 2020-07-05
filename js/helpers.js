@@ -50,11 +50,25 @@ window.helpers = (function () {
     };
   };
 
+  var setImagePreview = function (controllerNode, previewNode) {
+    var reader = new FileReader();
+    var file = controllerNode.files[0];
+
+    reader.addEventListener('load', function () {
+      previewNode.src = reader.result;
+    }, {
+      once: true
+    });
+
+    reader.readAsDataURL(file);
+  };
+
   return {
     getRandomNumber: getRandomNumber,
     getRandomItem: getRandomItem,
     checkIsEscEvent: checkIsEscEvent,
     checkIsEnterEvent: checkIsEnterEvent,
-    debounce: debounce
+    debounce: debounce,
+    setImagePreview: setImagePreview
   };
 })();
